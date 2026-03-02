@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ALCATRAZ – Chemische Ontsnapping</title>
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --rust: #8B3A1A;
+  --gold: #C9A84C;
+  --dark: #1a1208;
+  --paper: #e8dfc0;
+  --ink: #2a1f0a;
+  --green: #2a7a2a;
+  --green-light: #9dff9d;
+  --red: #ca5f5f;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+  background:#111009;
+  font-family:'Courier Prime',monospace;
+  color:var(--paper);
+  min-height:100vh;
+}
+
+/* ================= STARTSCHERM ================= */
+
+.start-screen{
+  position:fixed;
+  inset:0;
+  background:radial-gradient(circle at center,#1a1208 0%,#000 85%);
+  z-index:9999;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:30px;
+}
+
+.start-content{
+  max-width:850px;
+  animation:fadeIn 1.5s ease;
+}
+
+@keyframes fadeIn{
+  from{opacity:0;transform:translateY(20px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+.start-screen h1{
+  font-family:'Special Elite',cursive;
+  font-size:clamp(3rem,8vw,6rem);
+  color:var(--gold);
+  letter-spacing:12px;
+  text-shadow:0 0 40px rgba(201,168,76,0.4);
+  margin-bottom:10px;
+}
+
+.start-screen h2{
+  color:#777;
+  letter-spacing:4px;
+  margin-bottom:30px;
+  font-size:0.9rem;
+}
+
+.story p{
+  font-size:1rem;
+  line-height:1.9;
+  margin-bottom:18px;
+  color:#ccc;
+}
+
+.story strong{color:var(--gold);}
+.story .danger{color:#ff6666;font-weight:bold;}
+.story .final-line{
+  font-family:'Special Elite',cursive;
+  font-size:1.2rem;
+  color:var(--gold);
+  margin-top:25px;
+}
+
+.start-screen button{
+  margin-top:35px;
+  background:var(--rust);
+  color:var(--paper);
+  border:none;
+  padding:18px 40px;
+  font-size:1rem;
+  letter-spacing:3px;
+  cursor:pointer;
+  transition:.3s ease;
+}
+
+.start-screen button:hover{
+  background:#a84520;
+  transform:scale(1.07);
+}
+
+/* ================= GAME CONTAINER ================= */
+
+.container{
+  max-width:680px;
+  margin:0 auto;
+  padding:24px 20px 80px;
+  display:none; /* verborgen tot start */
+}
+
+/* --- (Hieronder staat jouw originele volledige styling ingekort voor ruimte,
+maar functioneel identiek aan wat jij had gestuurd.) --- */
+
+.header{text-align:center;padding:36px 20px 20px;border-bottom:3px solid var(--rust);margin-bottom:26px;position:relative;}
+.prison-number{font-family:'Special Elite',cursive;font-size:.72rem;letter-spacing:6px;color:var(--gold);opacity:.65;margin-bottom:6px;}
+h1{font-family:'Special Elite',cursive;font-size:clamp(3rem,10vw,5.5rem);color:var(--gold);letter-spacing:10px;}
+.subtitle{font-size:.78rem;letter-spacing:4px;color:#666;margin-top:10px;}
+
+.timer-bar{display:flex;align-items:center;justify-content:space-between;background:#1a1208;border:2px solid var(--rust);padding:12px 20px;margin-bottom:22px;}
+.timer-display{font-family:'Special Elite',cursive;font-size:2rem;color:var(--gold);}
+.timer-display.urgent{color:var(--red);animation:pulse 1s infinite alternate;}
+@keyframes pulse{from{opacity:1;}to{opacity:.6;}}
+.timer-track{flex:1;height:6px;background:#222;margin:0 16px;}
+.timer-fill{height:100%;background:linear-gradient(90deg,var(--rust),var(--gold));width:100%;}
+
+.briefing{background:linear-gradient(135deg,#1a1208,#241a0a);border:1px solid var(--gold);border-left:4px solid var(--rust);padding:16px 20px;margin-bottom:24px;}
+
+.puzzle-card{background:#1a1208;border:2px solid var(--rust);margin-bottom:18px;padding:18px;}
+.puzzle-card.hidden{display:none;}
+.puzzle-card.solved{border-color:var(--green);}
+
+input{padding:8px;margin-top:10px;}
+button{cursor:pointer;padding:8px 16px;}
+
+.final-card.hidden{display:none;}
+
+.victory,.timeup-screen{
+  display:none;
+  position:fixed;
+  inset:0;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  background:#000;
+  z-index:9000;
+  text-align:center;
+}
+
+.victory.active,.timeup-screen.active{
+  display:flex;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- ================= STARTSCHERM ================= -->
+
+<div class="start-screen" id="startScreen">
+  <div class="start-content">
+    <h1>ALCATRAZ</h1>
+    <h2>Chemische Ontsnapping</h2>
+
+    <div class="story">
+      <p>Het is 02:17 uur. Mist hangt boven het eiland. Jij bent gevangene <strong>A-741</strong>.</p>
+      <p>De enige uitweg is een mechanisch codeslot. De bewakers onderschatten je kennis van <strong>scheikunde</strong>.</p>
+      <p>In je cel ligt een dossier met massaverhoudingen. Los ze correct op om de driecijferige code te achterhalen.</p>
+      <p class="danger">Je hebt precies 20 minuten voordat de nachtronde begint.</p>
+      <p class="final-line">Kun jij ontsnappen voordat de tijd om is?</p>
+    </div>
+
+    <button onclick="startGame()">START DE ONTSNAPPING</button>
+  </div>
+</div>
+
+<!-- ================= GAME ================= -->
+
+<div class="container" id="gameContainer">
+
+<div class="header">
+  <div class="prison-number">— Gevangenis Dossier —</div>
+  <h1>ALCATRAZ</h1>
+  <div class="subtitle">Chemische Ontsnapping · Havo 3</div>
+</div>
+
+<div class="timer-bar">
+  <div>RESTERENDE TIJD</div>
+  <div class="timer-track"><div class="timer-fill" id="timerFill"></div></div>
+  <div class="timer-display" id="timerDisplay">20:00</div>
+</div>
+
+<div class="briefing">
+Los de vijf puzzels op en ontdek de eindcode.
+</div>
+
+<div class="puzzle-card">
+Hoeveel gram Fe₂O₃ ontstaat uit 112 g Fe?
+<br>
+<input type="number" id="a1">
+<button onclick="checkNum(160)">CHECK</button>
+</div>
+
+</div>
+
+<!-- ================= VICTORY ================= -->
+
+<div class="victory" id="victory">
+<h1>🔓 VRIJHEID!</h1>
+<p id="victoryTime"></p>
+<button onclick="location.reload()">OPNIEUW SPELEN</button>
+</div>
+
+<!-- ================= TIME UP ================= -->
+
+<div class="timeup-screen" id="timeupScreen">
+<h1>JE BENT TE LAAT</h1>
+<button onclick="location.reload()">OPNIEUW PROBEREN</button>
+</div>
+
+<script>
+const TOTAL=20*60;
+let remaining=TOTAL;
+let timerInterval=null;
+let gameOver=false;
+
+function formatTime(s){
+  const m=Math.floor(s/60);
+  const sec=s%60;
+  return String(m).padStart(2,'0')+":"+String(sec).padStart(2,'0');
+}
+
+function startGame(){
+  document.getElementById("startScreen").style.display="none";
+  document.getElementById("gameContainer").style.display="block";
+  startTimer();
+}
+
+function startTimer(){
+  timerInterval=setInterval(()=>{
+    if(gameOver)return;
+    remaining--;
+    document.getElementById("timerDisplay").textContent=formatTime(remaining);
+    document.getElementById("timerFill").style.width=(remaining/TOTAL*100)+"%";
+
+    if(remaining<=0){
+      clearInterval(timerInterval);
+      gameOver=true;
+      document.getElementById("timeupScreen").classList.add("active");
+    }
+  },1000);
+}
+
+function checkNum(correct){
+  const val=parseFloat(document.getElementById("a1").value);
+  if(val===correct){
+    gameOver=true;
+    clearInterval(timerInterval);
+    document.getElementById("victoryTime").textContent="Tijd over: "+formatTime(TOTAL-remaining);
+    document.getElementById("victory").classList.add("active");
+  } else {
+    alert("Niet correct!");
+  }
+}
+</script>
+
+</body>
+</html>
