@@ -7,6 +7,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
 
 <style>
+
+/* ================= ROOT ================= */
+
 :root {
   --rust: #8B3A1A;
   --gold: #C9A84C;
@@ -18,11 +21,11 @@
   --red: #ca5f5f;
 }
 
-*{margin:0;padding:0;box-sizing:border-box;}
+* { margin:0; padding:0; box-sizing:border-box; }
 
-body{
+body {
   background:#111009;
-  font-family:'Courier Prime',monospace;
+  font-family:'Courier Prime', monospace;
   color:var(--paper);
   min-height:100vh;
 }
@@ -100,42 +103,129 @@ body{
   transform:scale(1.07);
 }
 
-/* ================= GAME CONTAINER ================= */
+/* ================= CONTAINER ================= */
 
 .container{
   max-width:680px;
   margin:0 auto;
   padding:24px 20px 80px;
-  display:none; /* verborgen tot start */
+  display:none;
 }
 
-/* --- (Hieronder staat jouw originele volledige styling ingekort voor ruimte,
-maar functioneel identiek aan wat jij had gestuurd.) --- */
+/* ================= HEADER ================= */
 
-.header{text-align:center;padding:36px 20px 20px;border-bottom:3px solid var(--rust);margin-bottom:26px;position:relative;}
-.prison-number{font-family:'Special Elite',cursive;font-size:.72rem;letter-spacing:6px;color:var(--gold);opacity:.65;margin-bottom:6px;}
-h1{font-family:'Special Elite',cursive;font-size:clamp(3rem,10vw,5.5rem);color:var(--gold);letter-spacing:10px;}
-.subtitle{font-size:.78rem;letter-spacing:4px;color:#666;margin-top:10px;}
+.header{
+  text-align:center;
+  padding:36px 20px 20px;
+  border-bottom:3px solid var(--rust);
+  margin-bottom:26px;
+  position:relative;
+}
 
-.timer-bar{display:flex;align-items:center;justify-content:space-between;background:#1a1208;border:2px solid var(--rust);padding:12px 20px;margin-bottom:22px;}
-.timer-display{font-family:'Special Elite',cursive;font-size:2rem;color:var(--gold);}
-.timer-display.urgent{color:var(--red);animation:pulse 1s infinite alternate;}
-@keyframes pulse{from{opacity:1;}to{opacity:.6;}}
-.timer-track{flex:1;height:6px;background:#222;margin:0 16px;}
-.timer-fill{height:100%;background:linear-gradient(90deg,var(--rust),var(--gold));width:100%;}
+.prison-number{
+  font-family:'Special Elite',cursive;
+  font-size:.72rem;
+  letter-spacing:6px;
+  color:var(--gold);
+  opacity:.65;
+  margin-bottom:6px;
+}
 
-.briefing{background:linear-gradient(135deg,#1a1208,#241a0a);border:1px solid var(--gold);border-left:4px solid var(--rust);padding:16px 20px;margin-bottom:24px;}
+h1{
+  font-family:'Special Elite',cursive;
+  font-size:clamp(3rem,10vw,5.5rem);
+  color:var(--gold);
+  letter-spacing:10px;
+}
 
-.puzzle-card{background:#1a1208;border:2px solid var(--rust);margin-bottom:18px;padding:18px;}
-.puzzle-card.hidden{display:none;}
-.puzzle-card.solved{border-color:var(--green);}
+.subtitle{
+  font-size:.78rem;
+  letter-spacing:4px;
+  color:#666;
+  margin-top:10px;
+}
 
-input{padding:8px;margin-top:10px;}
-button{cursor:pointer;padding:8px 16px;}
+/* ================= TIMER ================= */
 
-.final-card.hidden{display:none;}
+.timer-bar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  background:#1a1208;
+  border:2px solid var(--rust);
+  padding:12px 20px;
+  margin-bottom:22px;
+}
 
-.victory,.timeup-screen{
+.timer-display{
+  font-family:'Special Elite',cursive;
+  font-size:2rem;
+  color:var(--gold);
+  letter-spacing:4px;
+}
+
+.timer-display.urgent{
+  color:var(--red);
+  animation:pulse 1s infinite alternate;
+}
+
+@keyframes pulse{
+  from{opacity:1;}
+  to{opacity:.6;}
+}
+
+.timer-track{
+  flex:1;
+  height:6px;
+  background:#222;
+  margin:0 16px;
+}
+
+.timer-fill{
+  height:100%;
+  background:linear-gradient(90deg,var(--rust),var(--gold));
+  width:100%;
+  transition:width 1s linear;
+}
+
+/* ================= PUZZLES ================= */
+
+.puzzle-card{
+  background:#1a1208;
+  border:2px solid var(--rust);
+  margin-bottom:18px;
+  padding:18px;
+}
+
+.puzzle-card.hidden{ display:none; }
+.puzzle-card.solved{ border-color:var(--green); }
+
+input{
+  padding:8px;
+  margin-top:10px;
+  width:100%;
+  background:#0d0d0d;
+  border:1px solid #444;
+  color:var(--paper);
+}
+
+button{
+  margin-top:10px;
+  padding:8px 16px;
+  background:var(--rust);
+  border:none;
+  color:var(--paper);
+  cursor:pointer;
+}
+
+button:hover{
+  background:#a84520;
+}
+
+/* ================= VICTORY & TIMEUP ================= */
+
+.victory,
+.timeup-screen{
   display:none;
   position:fixed;
   inset:0;
@@ -147,7 +237,8 @@ button{cursor:pointer;padding:8px 16px;}
   text-align:center;
 }
 
-.victory.active,.timeup-screen.active{
+.victory.active,
+.timeup-screen.active{
   display:flex;
 }
 
@@ -162,15 +253,12 @@ button{cursor:pointer;padding:8px 16px;}
   <div class="start-content">
     <h1>ALCATRAZ</h1>
     <h2>Chemische Ontsnapping</h2>
-
     <div class="story">
-      <p>Het is 02:17 uur. Mist hangt boven het eiland. Jij bent gevangene <strong>A-741</strong>.</p>
-      <p>De enige uitweg is een mechanisch codeslot. De bewakers onderschatten je kennis van <strong>scheikunde</strong>.</p>
-      <p>In je cel ligt een dossier met massaverhoudingen. Los ze correct op om de driecijferige code te achterhalen.</p>
-      <p class="danger">Je hebt precies 20 minuten voordat de nachtronde begint.</p>
-      <p class="final-line">Kun jij ontsnappen voordat de tijd om is?</p>
+      <p>Je zit opgesloten in cel <strong>A-741</strong>. Alleen een driecijferige code opent de deur.</p>
+      <p>Los de vijf massaverhouding-puzzels op.</p>
+      <p class="danger">Je hebt 20 minuten.</p>
+      <p class="final-line">Ontsnap… of word gepakt.</p>
     </div>
-
     <button onclick="startGame()">START DE ONTSNAPPING</button>
   </div>
 </div>
@@ -191,15 +279,10 @@ button{cursor:pointer;padding:8px 16px;}
   <div class="timer-display" id="timerDisplay">20:00</div>
 </div>
 
-<div class="briefing">
-Los de vijf puzzels op en ontdek de eindcode.
-</div>
-
 <div class="puzzle-card">
 Hoeveel gram Fe₂O₃ ontstaat uit 112 g Fe?
-<br>
 <input type="number" id="a1">
-<button onclick="checkNum(160)">CHECK</button>
+<button onclick="checkAnswer()">CHECK</button>
 </div>
 
 </div>
@@ -209,17 +292,18 @@ Hoeveel gram Fe₂O₃ ontstaat uit 112 g Fe?
 <div class="victory" id="victory">
 <h1>🔓 VRIJHEID!</h1>
 <p id="victoryTime"></p>
-<button onclick="location.reload()">OPNIEUW SPELEN</button>
+<button onclick="restartGame()">OPNIEUW SPELEN</button>
 </div>
 
 <!-- ================= TIME UP ================= -->
 
 <div class="timeup-screen" id="timeupScreen">
 <h1>JE BENT TE LAAT</h1>
-<button onclick="location.reload()">OPNIEUW PROBEREN</button>
+<button onclick="restartGame()">OPNIEUW PROBEREN</button>
 </div>
 
 <script>
+
 const TOTAL=20*60;
 let remaining=TOTAL;
 let timerInterval=null;
@@ -243,7 +327,6 @@ function startTimer(){
     remaining--;
     document.getElementById("timerDisplay").textContent=formatTime(remaining);
     document.getElementById("timerFill").style.width=(remaining/TOTAL*100)+"%";
-
     if(remaining<=0){
       clearInterval(timerInterval);
       gameOver=true;
@@ -252,17 +335,22 @@ function startTimer(){
   },1000);
 }
 
-function checkNum(correct){
+function checkAnswer(){
   const val=parseFloat(document.getElementById("a1").value);
-  if(val===correct){
+  if(val===160){
     gameOver=true;
     clearInterval(timerInterval);
-    document.getElementById("victoryTime").textContent="Tijd over: "+formatTime(TOTAL-remaining);
+    document.getElementById("victoryTime").textContent="Tijd: "+formatTime(TOTAL-remaining);
     document.getElementById("victory").classList.add("active");
   } else {
     alert("Niet correct!");
   }
 }
+
+function restartGame(){
+  location.reload();
+}
+
 </script>
 
 </body>
